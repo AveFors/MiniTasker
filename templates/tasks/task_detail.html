@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ task.title }}</title>
+</head>
+<body>
+    <p>
+        <a href="{% url 'tasks:task_list' %}">Назад к списку</a>
+    </p>
+
+    <h1>{{ task.title }}</h1>
+
+    <p><strong>Статус:</strong> {{ task.get_status_display }}</p>
+
+    {% if task.description %}
+        <p><strong>Описание:</strong> {{ task.description }}</p>
+    {% else %}
+        <p><strong>Описание:</strong> не указано</p>
+    {% endif %}
+
+    {% if task.deadline %}
+        <p><strong>Дедлайн:</strong> {{ task.deadline }}</p>
+    {% else %}
+        <p><strong>Дедлайн:</strong> не указан</p>
+    {% endif %}
+
+    <p><strong>Создана:</strong> {{ task.created_at }}</p>
+    <p><strong>Обновлена:</strong> {{ task.updated_at }}</p>
+</body>
+</html>
