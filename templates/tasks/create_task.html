@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Создание задачи</title>
+</head>
+
+<body>
+    <p>
+        <a href="{% url 'tasks:task_list' %}">Назад к списку</a>
+    </p>
+
+    <h1>Создание задачи</h1>
+
+    <form method="post">
+        {{ form.as_p }}
+
+        <button type="submit">Создать</button>
+    </form>
+</body>
+
+</html>
