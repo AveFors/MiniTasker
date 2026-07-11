@@ -1,31 +1,44 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <title>{{ task.title }}</title>
-</head>
-<body>
-    <p>
-        <a href="{% url 'tasks:task_list' %}">Назад к списку</a>
-    </p>
+{% extends "base.html" %}
 
-    <h1>{{ task.title }}</h1>
+{% block title %}{{ task.title }} · MiniTasker{% endblock %}
 
-    <p><strong>Статус:</strong> {{ task.get_status_display }}</p>
+{% block content %}
+<a class="back-link" href="{% url 'tasks:task_list' %}">← Назад к задачам</a>
 
-    {% if task.description %}
-        <p><strong>Описание:</strong> {{ task.description }}</p>
-    {% else %}
-        <p><strong>Описание:</strong> не указано</p>
-    {% endif %}
+<article class="detail-panel">
+    <div class="detail-header">
+        <div>
+            <span class="status status-{{ task.status }}">{{ task.get_status_display }}</span>
+            <h1>{{ task.title }}</h1>
+        </div>
+        <div class="action-group">
+            <a class="button button-secondary" href="{% url 'tasks:edit_task' task.pk %}">Редактировать</a>
+            <a class="button button-danger-outline" href="{% url 'tasks:delete_task' task.pk %}">Удалить</a>
+        </div>
+    </div>
 
-    {% if task.deadline %}
-        <p><strong>Дедлайн:</strong> {{ task.deadline }}</p>
-    {% else %}
-        <p><strong>Дедлайн:</strong> не указан</p>
-    {% endif %}
+    <section class="detail-section">
+        <h2>Описание</h2>
+        {% if task.description %}
+            <p class="description-text">{{ task.description|linebreaksbr }}</p>
+        {% else %}
+            <p class="muted">Описание не указано.</p>
+        {% endif %}
+    </section>
 
-    <p><strong>Создана:</strong> {{ task.created_at }}</p>
-    <p><strong>Обновлена:</strong> {{ task.updated_at }}</p>
-</body>
-</html>
+    <dl class="metadata-grid">
+        <div>
+            <dt>Дедлайн</dt>
+            <dd>{% if task.deadline %}{{ task.deadline|date:"d.m.Y" }}{% else %}Не указан{% endif %}</dd>
+        </div>
+        <div>
+            <dt>Создана</dt>
+            <dd>{{ task.created_at|date:"d.m.Y, H:i" }}</dd>
+        </div>
+        <div>
+            <dt>Обновлена</dt>
+            <dd>{{ task.updated_at|date:"d.m.Y, H:i" }}</dd>
+        </div>
+    </dl>
+</article>
+{% endblock %}

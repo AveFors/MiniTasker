@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block title %}Удаление задачи · MiniTasker{% endblock %}
+
+{% block content %}
+<a class="back-link" href="{% url 'tasks:task_detail' task.pk %}">← Назад к задаче</a>
+
+<div class="confirm-panel">
+    <div class="warning-icon">!</div>
+    <p class="eyebrow danger-text">Необратимое действие</p>
+    <h1>Удалить задачу?</h1>
+    <p>Задача «<strong>{{ task.title }}</strong>» будет удалена без возможности восстановления.</p>
+
+    <form method="post">
+        {% csrf_token %}
+        <div class="form-actions form-actions-center">
+            <button class="button button-danger" type="submit">Да, удалить</button>
+            <a class="button button-secondary" href="{% url 'tasks:task_detail' task.pk %}">Отмена</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

@@ -1,23 +1,24 @@
-<!DOCTYPE html>
-<html lang="ru">
+{% extends "base.html" %}
 
-<head>
-    <meta charset="UTF-8">
-    <title>Создание задачи</title>
-</head>
+{% block title %}Новая задача · MiniTasker{% endblock %}
 
-<body>
-    <p>
-        <a href="{% url 'tasks:task_list' %}">Назад к списку</a>
-    </p>
+{% block content %}
+<a class="back-link" href="{% url 'tasks:task_list' %}">← Назад к задачам</a>
 
-    <h1>Создание задачи</h1>
+<div class="form-layout">
+    <div class="form-heading">
+        <p class="eyebrow">Новая запись</p>
+        <h1>Создание задачи</h1>
+        <p>Заполните основные данные. Их можно будет изменить позже.</p>
+    </div>
 
-    <form method="post">
+    <form class="task-form" method="post">
+        {% csrf_token %}
         {{ form.as_p }}
-
-        <button type="submit">Создать</button>
+        <div class="form-actions">
+            <button class="button button-primary" type="submit">Создать задачу</button>
+            <a class="button button-ghost" href="{% url 'tasks:task_list' %}">Отмена</a>
+        </div>
     </form>
-</body>
-
-</html>
+</div>
+{% endblock %}

@@ -1,29 +1,47 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <title>Список задач</title>
-</head>
-<body>
-    <h1>Список задач</h1>
+{% extends "base.html" %}
 
-    {% if tasks %}
-        <ul>
-            {% for task in tasks %}
-                <li>
-                    <a href="{% url 'tasks:task_detail' task.pk %}">
-                        {{ task.title }}
-                    </a>
-                    - {{ task.get_status_display }}
+{% block title %}Задачи · MiniTasker{% endblock %}
 
-                    {% if task.deadline %}
-                        - дедлайн: {{ task.deadline }}
+{% block content %}
+<div class="page-heading">
+    <div>
+        <p class="eyebrow">Рабочее пространство</p>
+        <h1>Задачи</h1>
+        <p class="page-description">Следите за прогрессом и сроками в одном месте.</p>
+    </div>
+    <a class="button button-primary desktop-action" href="{% url 'tasks:create_task' %}">+ Создать задачу</a>
+</div>
+
+{% if tasks %}
+    <div class="task-list">
+        {% for task in tasks %}
+            <article class="task-card">
+                <div class="task-card-main">
+                    <span class="status status-{{ task.status }}">{{ task.get_status_display }}</span>
+                    <h2><a href="{% url 'tasks:task_detail' task.pk %}">{{ task.title }}</a></h2>
+                    {% if task.description %}
+                        <p class="task-preview">{{ task.description|truncatechars:140 }}</p>
+                    {% else %}
+                        <p class="task-preview task-preview-empty">Описание не добавлено</p>
                     {% endif %}
-                </li>
-            {% endfor %}
-        </ul>
-    {% else %}
-        <p>Задач пока нет.</p>
-    {% endif %}
-</body>
-</html>
+                </div>
+                <div class="task-card-meta">
+                    {% if task.deadline %}
+                        <span class="deadline">Срок: {{ task.deadline|date:"d.m.Y" }}</span>
+                    {% else %}
+                        <span class="muted">Без срока</span>
+                    {% endif %}
+                    <a class="text-link" href="{% url 'tasks:task_detail' task.pk %}">Открыть →</a>
+                </div>
+            </article>
+        {% endfor %}
+    </div>
+{% else %}
+    <div class="empty-state">
+        <div class="empty-icon">✓</div>
+        <h2>Задач пока нет</h2>
+        <p>Создайте первую задачу, чтобы начать работу.</p>
+        <a class="button button-primary" href="{% url 'tasks:create_task' %}">Создать задачу</a>
+    </div>
+{% endif %}
+{% endblock %}

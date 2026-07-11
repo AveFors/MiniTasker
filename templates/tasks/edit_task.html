@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block title %}Редактирование · MiniTasker{% endblock %}
+
+{% block content %}
+<a class="back-link" href="{% url 'tasks:task_detail' form.instance.pk %}">← Назад к задаче</a>
+
+<div class="form-layout">
+    <div class="form-heading">
+        <p class="eyebrow">Задача #{{ form.instance.pk }}</p>
+        <h1>Редактирование</h1>
+        <p>Измените необходимые поля и сохраните результат.</p>
+    </div>
+
+    <form class="task-form" method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <div class="form-actions">
+            <button class="button button-primary" type="submit">Сохранить изменения</button>
+            <a class="button button-ghost" href="{% url 'tasks:task_detail' form.instance.pk %}">Отмена</a>
+        </div>
+    </form>
+</div>
+{% endblock %}
