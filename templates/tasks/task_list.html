@@ -12,9 +12,9 @@
     <a class="button button-primary desktop-action" href="{% url 'tasks:create_task' %}">+ Создать задачу</a>
 </div>
 
-{% if tasks %}
+{% if page_obj %}
     <div class="task-list">
-        {% for task in tasks %}
+        {% for task in page_obj %}
             <article class="task-card">
                 <div class="task-card-main">
                     <span class="status status-{{ task.status }}">{{ task.get_status_display }}</span>
@@ -36,6 +36,8 @@
             </article>
         {% endfor %}
     </div>
+
+    {% include "includes/pagination.html" %}
 {% else %}
     <div class="empty-state">
         <div class="empty-icon">✓</div>
