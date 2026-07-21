@@ -8,6 +8,14 @@
 <article class="detail-panel">
     <div class="detail-header">
         <div>
+            {% if task.image %}
+                <a class="detail-thumbnail" href="{{ task.image.url }}" target="_blank" rel="noopener">
+                    <img
+                        src="{{ task.image.url }}"
+                        alt="Изображение задачи «{{ task.title }}»"
+                    >
+                </a>
+            {% endif %}
             <span class="status status-{{ task.status }}">{{ task.get_status_display }}</span>
             <h1>{{ task.title }}</h1>
         </div>

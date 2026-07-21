@@ -1,84 +1,39 @@
-from django.shortcuts import get_object_or_404, render, redirect
-from django.core.paginator import Paginator
+from django.urls import reverse_lazy
+from django.views.generic import (
+    ListView,
+    DetailView,
+    CreateView,
+    UpdateView,
+    DeleteView,
+)
 
 from .models import Task
 from .forms import TaskForm
 
-# TODO Сделать пагинацию + валидацию.
+
+class TaskListView(ListView):
+    model = Task
+    ordering = "-created_at"
+    paginate_by = 3
 
 
-def task_list(request):
-    tasks = Task.objects.order_by("-created_at")
-
-    paginator = Paginator(tasks, 3)
-    page_number = request.GET.get("page")
-
-    page_obj = paginator.get_page(page_number)
-
-    return render(
-        request,
-        "tasks/task_list.html",
-        {"page_obj": page_obj},
-    )
+class TaskDetailView(DetailView):
+    model = Task
 
 
-def task_detail(request, pk):
-    task = get_object_or_404(
-        Task,
-        pk=pk,
-    )
-    return render(
-        request,
-        "tasks/task_detail.html",
-        {"task": task},
-    )
+class TaskCreateView(CreateView):
+    model = Task
+    form_class = TaskForm
+    template_name = "tasks/create_task.html"
 
 
-def create_task(request):
-    form = TaskForm(request.POST or None)
-    context = {"form": form}
-    if form.is_valid():
-        form.save()
-        return redirect(
-            "tasks:task_detail",
-            pk=form.instance.pk,
-        )
-
-    return render(
-        request,
-        "tasks/create_task.html",
-        context=context,
-    )
+class TaskUpdateView(UpdateView):
+    model = Task
+    form_class = TaskForm
+    template_name = "tasks/edit_task.html"
 
 
-def edit_task(request, pk):
-    instance = get_object_or_404(Task, pk=pk)
-
-    form = TaskForm(
-        request.POST or None,
-        instance=instance,
-    )
-    if form.is_valid():
-        form.save()
-        return redirect(
-            "tasks:task_detail",
-            pk=form.instance.pk,
-        )
-
-    return render(
-        request,
-        "tasks/edit_task.html",
-        {"form": form},
-    )
-
-
-def delete_task(request, pk):
-    instance = get_object_or_404(Task, pk=pk)
-    if request.method == "POST":
-        instance.delete()
-        return redirect("tasks:task_list")
-    return render(
-        request,
-        "tasks/delete_task.html",
-        {"task": instance},
-    )
+class TaskDeleteView(DeleteView):
+    model = Task
+    template_name = "tasks/delete_task.html"
+    success_url = reverse_lazy("tasks:task_list")

@@ -16,14 +16,24 @@
     <div class="task-list">
         {% for task in page_obj %}
             <article class="task-card">
-                <div class="task-card-main">
-                    <span class="status status-{{ task.status }}">{{ task.get_status_display }}</span>
-                    <h2><a href="{% url 'tasks:task_detail' task.pk %}">{{ task.title }}</a></h2>
-                    {% if task.description %}
-                        <p class="task-preview">{{ task.description|truncatechars:140 }}</p>
-                    {% else %}
-                        <p class="task-preview task-preview-empty">Описание не добавлено</p>
-                    {% endif %}
+                <div class="task-card-content">
+                    <a class="task-thumbnail" href="{% url 'tasks:task_detail' task.pk %}" aria-label="Открыть задачу «{{ task.title }}»">
+                        {% if task.image %}
+                            <img src="{{ task.image.url }}" alt="" loading="lazy">
+                        {% else %}
+                            <span aria-hidden="true">{{ task.title|first|upper }}</span>
+                        {% endif %}
+                    </a>
+
+                    <div class="task-card-main">
+                        <span class="status status-{{ task.status }}">{{ task.get_status_display }}</span>
+                        <h2><a href="{% url 'tasks:task_detail' task.pk %}">{{ task.title }}</a></h2>
+                        {% if task.description %}
+                            <p class="task-preview">{{ task.description|truncatechars:140 }}</p>
+                        {% else %}
+                            <p class="task-preview task-preview-empty">Описание не добавлено</p>
+                        {% endif %}
+                    </div>
                 </div>
                 <div class="task-card-meta">
                     {% if task.deadline %}

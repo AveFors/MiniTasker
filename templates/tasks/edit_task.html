@@ -12,9 +12,9 @@
         <p>Измените необходимые поля и сохраните результат.</p>
     </div>
 
-    <form class="task-form" method="post">
+    <form class="task-form" method="post" enctype="multipart/form-data">
         {% csrf_token %}
-        {{ form.as_p }}
+        {% include "includes/task_form_fields.html" %}
         <div class="form-actions">
             <button class="button button-primary" type="submit">Сохранить изменения</button>
             <a class="button button-ghost" href="{% url 'tasks:task_detail' form.instance.pk %}">Отмена</a>

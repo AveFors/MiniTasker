@@ -1,6 +1,7 @@
 from django.db import models
 from django.core.exceptions import ValidationError
 from django.core.validators import MinLengthValidator
+from django.urls import reverse
 
 
 from core.models import BaseModel
@@ -46,6 +47,11 @@ class Task(BaseModel):
         validators=(validate_deadline_not_in_past,),
         verbose_name="Дедлайн",
     )
+    image = models.ImageField(
+        upload_to="task/",
+        blank=True,
+        verbose_name="Изображение",
+    )
 
     class Meta:
         verbose_name = "задача"
@@ -58,6 +64,9 @@ class Task(BaseModel):
             raise ValidationError(
                 {"description": "У выполненной задачи должно быть описание."}
             )
+
+    def get_absolute_url(self):
+        return reverse("tasks:task_detail", kwargs={"pk": self.pk})
 
     def __str__(self):
         return self.title

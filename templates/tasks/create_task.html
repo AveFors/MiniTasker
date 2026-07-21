@@ -12,9 +12,9 @@
         <p>Заполните основные данные. Их можно будет изменить позже.</p>
     </div>
 
-    <form class="task-form" method="post">
+    <form class="task-form" method="post" enctype="multipart/form-data">
         {% csrf_token %}
-        {{ form.as_p }}
+        {% include "includes/task_form_fields.html" %}
         <div class="form-actions">
             <button class="button button-primary" type="submit">Создать задачу</button>
             <a class="button button-ghost" href="{% url 'tasks:task_list' %}">Отмена</a>

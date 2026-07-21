@@ -201,6 +201,40 @@ h2 {
     box-shadow: var(--shadow);
 }
 
+.task-card-content {
+    min-width: 0;
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+}
+
+.task-card-main {
+    min-width: 0;
+}
+
+.task-thumbnail {
+    width: 72px;
+    height: 72px;
+    flex: 0 0 72px;
+    display: grid;
+    place-items: center;
+    overflow: hidden;
+    color: var(--primary);
+    background: #e7efed;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font-size: 24px;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.task-thumbnail img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+}
+
 .task-card h2 {
     margin: 10px 0 6px;
     font-size: 19px;
@@ -394,6 +428,24 @@ a.pagination-link:hover {
     margin-top: 12px;
 }
 
+.detail-thumbnail {
+    width: 80px;
+    height: 60px;
+    margin-bottom: 16px;
+    display: block;
+    overflow: hidden;
+    background: var(--background);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+}
+
+.detail-thumbnail img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+}
+
 .detail-section {
     margin-top: 32px;
     padding-top: 28px;
@@ -445,18 +497,18 @@ a.pagination-link:hover {
     border-bottom: 1px solid var(--border);
 }
 
-.task-form p {
+.form-field {
     margin-bottom: 20px;
 }
 
-.task-form label {
+.form-field > label {
     display: block;
     margin-bottom: 7px;
     font-size: 14px;
     font-weight: 650;
 }
 
-.task-form input,
+.task-form input:not([type="checkbox"]),
 .task-form textarea,
 .task-form select {
     width: 100%;
@@ -469,24 +521,73 @@ a.pagination-link:hover {
     font: inherit;
 }
 
+.task-form input[type="file"] {
+    padding: 5px;
+    color: var(--muted);
+    cursor: pointer;
+}
+
+.task-form input[type="file"]::file-selector-button {
+    min-height: 32px;
+    margin-right: 12px;
+    padding: 6px 12px;
+    color: var(--text);
+    background: var(--todo-soft);
+    border: 0;
+    border-radius: 4px;
+    font: inherit;
+    font-weight: 650;
+    cursor: pointer;
+}
+
+.task-form input[type="file"]::file-selector-button:hover {
+    color: var(--primary);
+    background: #e7efed;
+}
+
+.task-form input[type="checkbox"] {
+    width: auto;
+    min-height: auto;
+    margin: 10px 5px 10px 0;
+}
+
 .task-form textarea {
     min-height: 150px;
     resize: vertical;
 }
 
-.task-form input:focus,
+.task-form input:not([type="checkbox"]):focus,
 .task-form textarea:focus,
 .task-form select:focus {
     border-color: var(--primary);
     outline: 3px solid rgba(23, 107, 91, 0.13);
 }
 
-.task-form .errorlist {
-    margin: 0 0 7px;
-    padding: 0;
-    color: var(--danger);
-    list-style: none;
+.field-help,
+.field-error {
+    margin: 6px 0 0;
     font-size: 14px;
+}
+
+.field-help {
+    color: var(--muted);
+}
+
+.field-error,
+.form-errors {
+    color: var(--danger);
+}
+
+.form-errors .errorlist {
+    margin: 0 0 20px;
+    padding: 0;
+    list-style: none;
+}
+
+.form-field.has-error input,
+.form-field.has-error textarea,
+.form-field.has-error select {
+    border-color: var(--danger);
 }
 
 .form-actions {
@@ -532,6 +633,17 @@ a.pagination-link:hover {
         min-width: 0;
         flex-direction: row;
         align-items: center;
+    }
+
+    .task-card-content {
+        gap: 13px;
+    }
+
+    .task-thumbnail {
+        width: 60px;
+        height: 60px;
+        flex-basis: 60px;
+        font-size: 20px;
     }
 
     .pagination-link {
